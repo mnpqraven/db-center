@@ -31,6 +31,21 @@ CREATE TABLE `frameworks` (
 	`stars` integer
 );
 --> statement-breakpoint
+CREATE TABLE `itemRarity` (
+	`name` text PRIMARY KEY NOT NULL,
+	`type` integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `itemSubType` (
+	`name` text PRIMARY KEY NOT NULL,
+	`type` integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `itemType` (
+	`name` text PRIMARY KEY NOT NULL,
+	`type` integer NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `path` (
 	`name` text PRIMARY KEY NOT NULL,
 	`type` integer NOT NULL
