@@ -7,11 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { avatars } from "@/dbSchemas/avatar";
-import { db } from "@/lib/database";
 
 export default async function Page() {
-  const list = await server.honkai.avatar();
+  const list = await server.honkai.avatar.list();
 
   return (
     <Table>
