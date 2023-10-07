@@ -24,11 +24,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient(TANSTACK_CONFIG));
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      links: [
-        httpBatchLink({
-          url: "http://localhost:3000/api",
-        }),
-      ],
+      links: [httpBatchLink({ url: "/api" })],
     })
   );
 
