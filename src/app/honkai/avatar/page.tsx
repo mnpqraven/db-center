@@ -1,3 +1,4 @@
+import { server } from "@/app/_trpc/serverClient";
 import {
   Table,
   TableBody,
@@ -10,7 +11,7 @@ import { avatars } from "@/dbSchemas/avatar";
 import { db } from "@/lib/database";
 
 export default async function Page() {
-  const list = await db.select().from(avatars);
+  const list = await server.honkai.avatar();
 
   return (
     <Table>
