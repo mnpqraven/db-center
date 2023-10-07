@@ -22,7 +22,7 @@ export default function RootLayout({
         <AppProvider>
           <Navbar />
 
-          {children}
+          <main className="container">{children}</main>
         </AppProvider>
       </body>
     </html>
