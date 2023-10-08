@@ -1,11 +1,13 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { elements } from "./element";
 import { paths } from "./path";
+import { skills } from "./skill";
+import { traces } from "./trace";
 
 export const avatars = sqliteTable("avatar", {
-  id: integer("id").primaryKey(),
+  id: int("id").primaryKey(),
   name: text("name").notNull(),
-  rarity: integer("rarity").notNull(),
+  rarity: int("rarity").notNull(),
   votag: text("votag"),
   damageType: text("damage_type")
     .references(() => elements.name)
@@ -13,5 +15,15 @@ export const avatars = sqliteTable("avatar", {
   path: text("path")
     .references(() => paths.name)
     .notNull(),
-  spneed: integer("spneed"),
+  spneed: int("spneed"),
+});
+
+export const avatarTraces = sqliteTable("avatarTrace", {
+  avatarId: int("avatarId").references(() => avatars.id),
+  pointId: int("pointId").references(() => traces.id),
+});
+
+export const avatarSkills = sqliteTable("avatarSkill", {
+  avatarId: int("avatarId").references(() => avatars.id),
+  skillId: int("skillId").references(() => skills.id),
 });
