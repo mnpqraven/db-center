@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Merriweather_Sans } from "next/font/google";
 import { Navbar } from "@/components/navbar/Navbar";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Merriweather_Sans({ subsets: ["latin"], display: "swap" });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
           <Navbar />
 
           <main className="container">{children}</main>
+          <Toaster />
         </AppProvider>
       </body>
     </html>
