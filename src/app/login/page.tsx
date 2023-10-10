@@ -1,4 +1,3 @@
-import { getCsrfToken } from "next-auth/react";
 import LoginForm from "./LoginForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
