@@ -1,6 +1,5 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { items } from "./item";
-import { avatars } from "./avatar";
+import { items } from ".";
 
 const ANCHORS = [
   "Point01",
@@ -22,6 +21,7 @@ const ANCHORS = [
   "Point17",
   "Point18",
 ] as const;
+
 export const traces = sqliteTable("trace", {
   id: int("id").primaryKey(),
   maxLevel: int("maxLevel"),
@@ -29,18 +29,9 @@ export const traces = sqliteTable("trace", {
   anchor: text("anchor", { enum: ANCHORS }),
   defaultUnlock: int("defaultUnlock", { mode: "boolean" }),
   avatarPromotionLimit: int("avatarPromotionLimit"),
-  /**
-   * List<number>
-   */
-  prePoint: text("prePoint", { mode: "json" }),
-  /**
-   * List<string>
-   */
-  pointDesc: text("pointDesc", { mode: "json" }),
-  /**
-   * List<string[]>
-   */
-  paramList: text("paramList", { mode: "json" }),
+  prePoint: text("prePoint", { mode: "json" }).$type<{ list: number[] }>(),
+  pointDesc: text("pointDesc", { mode: "json" }).$type<{ list: string[] }>(),
+  paramList: text("paramList", { mode: "json" }).$type<{ list: string[][] }>(),
 });
 
 export const traceMaterials = sqliteTable("traceMaterial", {

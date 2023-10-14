@@ -1,23 +1,41 @@
+import { InferSelectModel, relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const items = sqliteTable("item", {
   id: int("id").primaryKey(),
-  item_name: text("name"),
+  itemName: text("name"),
   rarity: text("rarity")
     .references(() => itemRarities.name)
     .notNull(),
-  item_main_type: text("main_type")
+  itemMainType: text("main_type")
     .references(() => itemTypes.name)
     .notNull(),
-  item_sub_type: text("sub_type")
+  itemSubType: text("sub_type")
     .references(() => itemSubTypes.name)
     .notNull(),
-  inventory_display_tag: int("inventory_display_tag"),
-  purpose_type: int("purpose_type"),
-  item_desc: text("desc"),
-  item_bgdesc: text("bgdesc"),
-  pile_limit: int("pile_limit"),
+  inventoryDisplayTag: int("inventory_display_tag"),
+  purposeType: int("purpose_type"),
+  itemDesc: text("desc"),
+  itemBgdesc: text("bgdesc"),
+  pileLimit: int("pile_limit"),
 });
+
+export type ItemSchema = InferSelectModel<typeof items>
+
+export const itemRelations = relations(items, ({ one }) => ({
+  mainType: one(itemTypes, {
+    fields: [items.itemMainType],
+    references: [itemTypes.name],
+  }),
+  subType: one(itemSubTypes, {
+    fields: [items.itemSubType],
+    references: [itemSubTypes.name],
+  }),
+  rarity: one(itemRarities, {
+    fields: [items.rarity],
+    references: [itemRarities.name],
+  }),
+}));
 
 export const itemTypes = sqliteTable("itemType", {
   name: text("name", {
@@ -25,6 +43,10 @@ export const itemTypes = sqliteTable("itemType", {
   }).primaryKey(),
   type: int("type").notNull(),
 });
+
+export const itemTypeRelation = relations(itemTypes, ({ many }) => ({
+  items: many(items),
+}));
 
 export const itemSubTypes = sqliteTable("itemSubType", {
   name: text("name", {
@@ -49,9 +71,17 @@ export const itemSubTypes = sqliteTable("itemSubType", {
   type: int("type").notNull(),
 });
 
+export const itemSubTypeRelations = relations(itemSubTypes, ({ many }) => ({
+  items: many(items),
+}));
+
 export const itemRarities = sqliteTable("itemRarity", {
   name: text("name", {
     enum: ["VeryRare", "SuperRare", "Rare", "NotNormal", "Normal"],
   }).primaryKey(),
   type: int("type").notNull(),
 });
+
+export const itemRarityRelations = relations(itemRarities, ({ many }) => ({
+  items: many(items),
+}));

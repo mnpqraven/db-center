@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const paths = sqliteTable("path", {
   name: text("name", {
@@ -12,5 +12,5 @@ export const paths = sqliteTable("path", {
       "Abundance",
     ],
   }).primaryKey(),
-  type: integer("type").notNull(),
+  type: int("type").notNull(),
 });
