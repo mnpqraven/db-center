@@ -1,26 +1,44 @@
 "use client";
+
 import { trpc } from "@/app/_trpc/client";
 import { useTable } from "@/lib/hooks/useTable";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { columns } from "./columns";
 import { DataTableToggleColumn } from "@/components/shared/table/DataTableToggleColumn";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { DataTable } from "@/components/shared/table/DataTable";
 import { DataTablePagination } from "@/components/shared/table/DataTablePagination";
-import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { PaginationState } from "@tanstack/react-table";
 
 export default function Page() {
-  const { data, isInitialLoading } = trpc.honkai.avatar.list.useQuery();
-  const avatars = useMemo(() => data ?? [], [data]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 25,
+  });
+
+  const { data, isInitialLoading } = trpc.honkai.item.list.useQuery(
+    {
+      limit: pagination.pageSize,
+      page: pagination.pageIndex,
+    },
+    { keepPreviousData: true }
+  );
+
+  const items = useMemo(() => data?.data ?? [], [data]);
 
   const { table } = useTable({
-    data: avatars,
+    data: items,
     columns,
+    initialState: {
+      columnVisibility: {
+        itemDesc: false,
+        itemBgdesc: false,
+      },
+    },
+    pageCount: data?.pagination.total
+      ? Math.ceil(data?.pagination.total / pagination.pageSize)
+      : undefined,
+    pagination: { pagination, setPagination },
   });
 
   return (

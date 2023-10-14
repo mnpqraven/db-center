@@ -22,7 +22,7 @@ export default function RootLayout({
         <AppProvider>
           <Navbar />
 
-          <main className="container">{children}</main>
+          <main className="py-8 px-4">{children}</main>
           <Toaster />
         </AppProvider>
       </body>
