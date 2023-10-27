@@ -1,6 +1,5 @@
 import { server } from "@/app/_trpc/serverClient";
 import { NextRequest } from "next/server";
-import * as z from "zod";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;

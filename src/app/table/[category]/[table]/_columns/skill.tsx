@@ -2,17 +2,17 @@ import { SkillSchema } from "@/dbSchemas/skill";
 import { sanitizeNewline } from "@/lib/utils";
 import { createColumnHelper } from "@tanstack/react-table";
 
-const helper = createColumnHelper<SkillSchema>();
-export const columns = [
-  helper.accessor("id", {}),
-  helper.accessor("name", {}),
-  helper.accessor("tag", {}),
-  helper.accessor("typeDesc", {}),
-  helper.accessor("attackType", {}),
-  helper.accessor("maxLevel", {}),
-  helper.accessor("spGain", {}),
-  helper.accessor("spNeed", {}),
-  helper.accessor("skillDesc", {
+const col = createColumnHelper<SkillSchema>();
+export const skillColumns = [
+  col.accessor("id", {}),
+  col.accessor("name", {}),
+  col.accessor("tag", {}),
+  col.accessor("typeDesc", {}),
+  col.accessor("attackType", {}),
+  col.accessor("maxLevel", {}),
+  col.accessor("spGain", {}),
+  col.accessor("spNeed", {}),
+  col.accessor("skillDesc", {
     cell: ({ getValue }) => (
       <div>
         {sanitizeNewline(
@@ -26,7 +26,7 @@ export const columns = [
       </div>
     ),
   }),
-  helper.accessor("paramList", {
+  col.accessor("paramList", {
     cell: ({ getValue }) => (
       <div className="flex flex-col">
         {getValue()?.at(0)?.join(", ")}

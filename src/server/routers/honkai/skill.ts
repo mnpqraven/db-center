@@ -4,9 +4,8 @@ import { publicProcedure, router } from "@/server/trpc";
 import { z } from "zod";
 
 export const skillRouter = router({
-  list: publicProcedure.input(z.object({})).query(async ({ input }) => {
-    const data: SkillSchema[] = await db.select().from(skills);
-    return data;
+  list: publicProcedure.query(async ({ input }) => {
+    return (await db.select().from(skills)) satisfies Awaited<SkillSchema[]>;
   }),
   byCharId: publicProcedure
     .input(

@@ -75,9 +75,12 @@ export function useTable<TData>({
     // NOTE: all rows can be expanded, this might be the desired behaviour
     // since we want full JSON data on all events
     getRowCanExpand: () => true,
-    getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: !controlledPagination
+      ? getPaginationRowModel()
+      : undefined,
     pageCount,
 
     // pass state to let the hook manage data

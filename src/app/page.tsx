@@ -32,7 +32,9 @@ const DictItem = forwardRef<HTMLDivElement, DictProps>(function DictItem(
               <span>{table.name}</span>
               <div className="flex gap-2">
                 <Button asChild>
-                  <Link href={data.category.route + "/" + table.route}>
+                  <Link
+                    href={"/table/" + data.category.route + "/" + table.route}
+                  >
                     Table
                   </Link>
                 </Button>

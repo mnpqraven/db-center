@@ -1,10 +1,10 @@
 import { AvatarSchema } from "@/dbSchemas";
 import { createColumnHelper } from "@tanstack/react-table";
 
-const helper = createColumnHelper<AvatarSchema>();
+const col = createColumnHelper<AvatarSchema>();
 
-export const columns = [
-  helper.display({
+export const avatarColumns = [
+  col.display({
     id: "index",
     size: 40,
     header: () => <div className="text-center">#</div>,
@@ -14,11 +14,11 @@ export const columns = [
       </div>
     ),
   }),
-  helper.accessor("id", {}),
-  helper.accessor("name", {}),
-  helper.accessor("rarity", {}),
-  helper.accessor("votag", {}),
-  helper.accessor("damageType", {}),
-  helper.accessor("path", {}),
-  helper.accessor("spneed", {}),
+  col.accessor("id", {}),
+  col.accessor("name", {}),
+  col.accessor("rarity", {}),
+  col.accessor("votag", {}),
+  col.accessor("damageType", {}),
+  col.accessor("path", {}),
+  col.accessor("spneed", {}),
 ];
