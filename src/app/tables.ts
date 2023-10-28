@@ -14,9 +14,9 @@ export const routeDict: RouteItem[] = [
       route: "honkai",
     },
     tables: [
-      { name: "Characters", route: "avatar", api: ["list"] },
-      { name: "Skills", route: "skill", api: ["list"] },
-      { name: "Items", route: "item" },
+      { name: "Characters", route: "avatars", api: ["list"] },
+      { name: "Skills", route: "skills", api: ["list"] },
+      { name: "Items", route: "items" },
     ],
   },
 ];

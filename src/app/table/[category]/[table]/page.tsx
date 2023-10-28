@@ -3,60 +3,46 @@
 import { trpc } from "@/app/_trpc/client";
 import { useTable } from "@/lib/hooks/useTable";
 import { useMemo, useState } from "react";
-import { avatarColumns } from "./_columns/avatar";
 import { DataTableToggleColumn } from "@/components/shared/table/DataTableToggleColumn";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DataTable } from "@/components/shared/table/DataTable";
 import { DataTablePagination } from "@/components/shared/table/DataTablePagination";
 import { Input } from "@/components/ui/input";
-import { AvatarSchema, ItemSchema, SkillSchema } from "@/dbSchemas";
-import { search } from "@/lib/utils";
-import { ColumnDef } from "@tanstack/react-table";
-import { itemColumns } from "./_columns/item";
-import { skillColumns } from "./_columns/skill";
-import { Categories, TableStructs, Tables } from "./types";
-
-const DICT: Record<Tables, { columns: ColumnDef<any, any>[]; keys: string[] }> =
-  {
-    avatar: {
-      columns: avatarColumns,
-      keys: ["id", "name", "votag"] satisfies (keyof AvatarSchema)[],
-    },
-    item: {
-      columns: itemColumns,
-      keys: ["id", "itemName"] satisfies (keyof ItemSchema)[],
-    },
-    skill: {
-      columns: skillColumns,
-      keys: ["id", "name", "attackType"] satisfies (keyof SkillSchema)[],
-    },
-  };
+import { DEFAULT_PAGINATION, search } from "@/lib/utils";
+import { Categories, TableStructs } from "./types";
+import { type ValidTableNames } from "@/server/routers/table";
+import { TABLE_DICT } from "./_data/dataset";
 
 interface Params {
   params: {
     category: Categories;
-    table: Tables;
+    table: ValidTableNames;
   };
 }
 
 export default function Page({ params }: Params) {
-  const { category: categorySlug, table: tableSlug } = params;
+  const { category: _categorySlug, table: tableName } = params;
+
   const [keyword, setKeyword] = useState("");
+  const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
 
-  const dict = DICT[tableSlug];
+  const dict = TABLE_DICT[tableName];
 
-  const { data, isInitialLoading } =
-    // @ts-ignore
-    trpc[categorySlug][tableSlug].list.useQuery();
+  const { data, isInitialLoading } = trpc.table.list.useQuery(
+    { tableName, pagination },
+    { keepPreviousData: true }
+  );
 
   const chunkData = useMemo(
-    () => (data ? search(data, dict.keys, keyword) : []),
-    [data, dict.keys, keyword]
+    () => (!!data ? search(data.data, dict?.searchKeys ?? [], keyword) : []),
+    [data, dict?.searchKeys, keyword]
   ) satisfies TableStructs[];
 
   const { table: tableDef } = useTable({
     data: chunkData,
-    columns: dict.columns,
+    columns: dict?.columns ?? [],
+    pageCount: data?.pagination.totalPages,
+    pagination: { pagination, setPagination },
   });
 
   return (

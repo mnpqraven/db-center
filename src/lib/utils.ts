@@ -1,6 +1,12 @@
+import { PaginationState } from "@tanstack/react-table";
 import { type ClassValue, clsx } from "clsx";
 import Fuse, { FuseOptionKey } from "fuse.js";
 import { twMerge } from "tailwind-merge";
+
+export const DEFAULT_PAGINATION: PaginationState = {
+  pageIndex: 0,
+  pageSize: 10,
+};
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
