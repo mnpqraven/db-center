@@ -8,12 +8,17 @@ import { avatarColumns } from "../_columns/avatar";
 import { itemColumns } from "../_columns/item";
 import { skillColumns } from "../_columns/skill";
 
-export const TABLE_DICT: Partial<
-  Record<
-    ValidTableNames,
-    { columns: ColumnDef<any, any>[]; searchKeys: EitherArrayKeyof<ValidTableSchemas> }
-  >
-> = {
+export type EitherArrayKeyof<T> = T extends object ? (keyof T)[] : never;
+export type EitherArrayColumns<T> = T extends object
+  ? ColumnDef<T, any>[]
+  : never;
+
+type PageDataSet = {
+  columns: EitherArrayColumns<ValidTableSchemas>;
+  searchKeys: EitherArrayKeyof<ValidTableSchemas>;
+};
+
+export const TABLE_DICT: Partial<Record<ValidTableNames, PageDataSet>> = {
   avatars: {
     columns: avatarColumns,
     searchKeys: ["id", "name", "votag"] satisfies (keyof AvatarSchema)[],
@@ -27,7 +32,3 @@ export const TABLE_DICT: Partial<
     searchKeys: ["id", "name", "attackType"] satisfies (keyof SkillSchema)[],
   },
 };
-
-
-type EitherArray<T> = T extends object ? Array<T> : never
-type EitherArrayKeyof<T> = T extends object ? Array<keyof T> : never

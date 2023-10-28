@@ -10,6 +10,8 @@ import {
   items,
 } from "@/dbSchemas";
 
+export type EitherArray<T> = T extends object ? T[] : never;
+
 export type ValidTableNames = keyof typeof db.query;
 export type ValidTableSchemas = AvatarSchema | ItemSchema | SkillSchema;
 
@@ -43,6 +45,7 @@ function getTableFactory(tableName: z.TypeOf<typeof ValidTableNames>) {
     case "avatars":
       return avatars;
     case "avatarToSkills":
+    case "avatarTraces":
     case "blogs":
     case "elements":
     case "frameworks":
@@ -50,6 +53,8 @@ function getTableFactory(tableName: z.TypeOf<typeof ValidTableNames>) {
     case "itemTypes":
     case "itemSubTypes":
     case "itemRarities":
+    case "lightCones":
+    case "lightConeToSkill":
     case "paths":
     case "skills":
     case "skillTypes":
@@ -60,7 +65,7 @@ function getTableFactory(tableName: z.TypeOf<typeof ValidTableNames>) {
 }
 
 type ServerTableResponse = {
-  data: ValidTableSchemas[];
+  data: EitherArray<ValidTableSchemas>;
   pagination: {
     pageIndex: number;
     pageSize: number;
@@ -91,7 +96,9 @@ async function getTableData(
       .select()
       .from(dbStruct)
       .limit(pageSize)
-      .offset(pageIndex * pageSize)) as unknown as ValidTableSchemas[];
+      .offset(
+        pageIndex * pageSize
+      )) as unknown as EitherArray<ValidTableSchemas>; // safe typecast
 
     return {
       data,

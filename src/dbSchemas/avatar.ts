@@ -1,7 +1,7 @@
 import { int, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { InferSelectModel, relations } from "drizzle-orm";
-import { avatarToSkills } from "./avatarToSkills";
-import { elements, paths } from ".";
+import { avatarToSkills } from "./avatarToSkill";
+import { elements, paths, traces } from ".";
 
 export const avatars = sqliteTable("avatar", {
   id: int("id").primaryKey(),
@@ -23,13 +23,26 @@ export const avatarRelations = relations(avatars, ({ many }) => ({
   avatarToSkills: many(avatarToSkills),
 }));
 
-// export const avatarTraces = sqliteTable(
-//   "avatarTrace",
-//   {
-//     avatarId: int("avatarId").references(() => avatars.id),
-//     pointId: int("pointId").references(() => traces.id),
-//   },
-//   (t) => ({
-//     pk: primaryKey(t.avatarId, t.pointId),
-//   })
-// );
+export const avatarTraces = sqliteTable(
+  "avatarTrace",
+  {
+    avatarId: int("avatar_id")
+      .references(() => avatars.id)
+      .notNull(),
+    pointId: int("point_id")
+      .references(() => traces.id)
+      .notNull(),
+  },
+  (t) => ({ pk: primaryKey(t.avatarId, t.pointId) })
+);
+
+export const traceRelations = relations(avatarTraces, ({ one }) => ({
+  avatar: one(avatars, {
+    fields: [avatarTraces.avatarId],
+    references: [avatars.id],
+  }),
+  trace: one(traces, {
+    fields: [avatarTraces.pointId],
+    references: [traces.id],
+  }),
+}));

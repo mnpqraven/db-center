@@ -8,10 +8,10 @@ export const blogs = sqliteTable("blogs", {
     .$defaultFn(() => ulid()),
   name: text("name", { length: 256 }).notNull(),
   content: text("content").notNull(),
-  createdAt: int("createdAt", { mode: "timestamp" })
+  createdAt: int("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
-  updatedAt: int("updatedAt", { mode: "timestamp" })
+  updatedAt: int("updated_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
 });

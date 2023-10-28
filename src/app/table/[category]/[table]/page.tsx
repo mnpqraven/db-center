@@ -9,8 +9,12 @@ import { DataTable } from "@/components/shared/table/DataTable";
 import { DataTablePagination } from "@/components/shared/table/DataTablePagination";
 import { Input } from "@/components/ui/input";
 import { DEFAULT_PAGINATION, search } from "@/lib/utils";
-import { Categories, TableStructs } from "./types";
-import { type ValidTableNames } from "@/server/routers/table";
+import { Categories } from "./types";
+import {
+  EitherArray,
+  ValidTableSchemas,
+  type ValidTableNames,
+} from "@/server/routers/table";
 import { TABLE_DICT } from "./_data/dataset";
 
 interface Params {
@@ -34,12 +38,20 @@ export default function Page({ params }: Params) {
   );
 
   const chunkData = useMemo(
-    () => (!!data ? search(data.data, dict?.searchKeys ?? [], keyword) : []),
+    () =>
+      !!data
+        ? search<EitherArray<ValidTableSchemas>[number]>(
+            data.data,
+            dict?.searchKeys ?? [],
+            keyword
+          )
+        : [],
     [data, dict?.searchKeys, keyword]
-  ) satisfies TableStructs[];
+  );
 
   const { table: tableDef } = useTable({
     data: chunkData,
+    // @ts-ignore
     columns: dict?.columns ?? [],
     pageCount: data?.pagination.totalPages,
     pagination: { pagination, setPagination },

@@ -1,4 +1,4 @@
-import { SkillSchema } from "@/dbSchemas/skill";
+import { SkillSchema } from "@/dbSchemas";
 import { sanitizeNewline } from "@/lib/utils";
 import { createColumnHelper } from "@tanstack/react-table";
 

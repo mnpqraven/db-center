@@ -24,20 +24,20 @@ const ANCHORS = [
 
 export const traces = sqliteTable("trace", {
   id: int("id").primaryKey(),
-  maxLevel: int("maxLevel"),
-  pointType: int("pointType"),
+  maxLevel: int("max_level"),
+  pointType: int("point_type"),
   anchor: text("anchor", { enum: ANCHORS }),
-  defaultUnlock: int("defaultUnlock", { mode: "boolean" }),
-  avatarPromotionLimit: int("avatarPromotionLimit"),
-  prePoint: text("prePoint", { mode: "json" }).$type<{ list: number[] }>(),
-  pointDesc: text("pointDesc", { mode: "json" }).$type<{ list: string[] }>(),
-  paramList: text("paramList", { mode: "json" }).$type<{ list: string[][] }>(),
+  defaultUnlock: int("default_unlock", { mode: "boolean" }),
+  avatarPromotionLimit: int("avatar_promotion_limit"),
+  prePoint: text("pre_point", { mode: "json" }).$type<{ list: number[] }>(),
+  pointDesc: text("point_desc", { mode: "json" }).$type<{ list: string[] }>(),
+  paramList: text("param_list", { mode: "json" }).$type<{ list: string[][] }>(),
 });
 
 export const traceMaterials = sqliteTable("traceMaterial", {
-  requestId: int("requestId").primaryKey({ autoIncrement: true }),
-  itemId: int("itemId").references(() => items.id),
-  pointId: int("pointId").references(() => traces.id),
+  requestId: int("request_id").primaryKey({ autoIncrement: true }),
+  itemId: int("item_id").references(() => items.id),
+  pointId: int("point_id").references(() => traces.id),
   level: int("level"),
-  num: int("itemNum"),
+  num: int("item_num"),
 });
