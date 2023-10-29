@@ -1,6 +1,6 @@
 import { int, sqliteTable } from "drizzle-orm/sqlite-core";
 
-export const avatarToPromotions = sqliteTable("avatarPromotion", {
+export const avatarToPromotions = sqliteTable("honkai_avatarPromotion", {
   avatar_id: int("id").primaryKey(),
   // promotion: Vec<u32>,
   // promotion_cost_list: Vec<Vec<MiniItem>>,

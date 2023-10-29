@@ -1,4 +1,4 @@
-import { SkillSchema, skills } from "@/dbSchemas/lightConeToSkill";
+import { SkillSchema, skills } from "@/dbSchemas";
 import { db } from "@/lib/database";
 import { publicProcedure, router } from "@/server/trpc";
 import { z } from "zod";

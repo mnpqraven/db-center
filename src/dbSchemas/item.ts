@@ -1,18 +1,18 @@
 import { InferSelectModel, relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const items = sqliteTable("item", {
+export const items = sqliteTable("honkai_item", {
   id: int("id").primaryKey(),
   itemName: text("name"),
-  rarity: text("rarity")
-    .references(() => itemRarities.name)
-    .notNull(),
-  itemMainType: text("main_type")
-    .references(() => itemTypes.name)
-    .notNull(),
-  itemSubType: text("sub_type")
-    .references(() => itemSubTypes.name)
-    .notNull(),
+  rarity: text("rarity").references(() => itemRarities.name, {
+    onDelete: "set null",
+  }),
+  itemMainType: text("main_type").references(() => itemTypes.name, {
+    onDelete: "set null",
+  }),
+  itemSubType: text("sub_type").references(() => itemSubTypes.name, {
+    onDelete: "set null",
+  }),
   inventoryDisplayTag: int("inventory_display_tag"),
   purposeType: int("purpose_type"),
   itemDesc: text("desc"),
@@ -20,7 +20,7 @@ export const items = sqliteTable("item", {
   pileLimit: int("pile_limit"),
 });
 
-export type ItemSchema = InferSelectModel<typeof items>
+export type ItemSchema = InferSelectModel<typeof items>;
 
 export const itemRelations = relations(items, ({ one }) => ({
   mainType: one(itemTypes, {
@@ -37,7 +37,7 @@ export const itemRelations = relations(items, ({ one }) => ({
   }),
 }));
 
-export const itemTypes = sqliteTable("itemType", {
+export const itemTypes = sqliteTable("honkai_itemType", {
   name: text("name", {
     enum: ["Usable", "Mission", "Display", "Virtual", "Material"],
   }).primaryKey(),
@@ -48,7 +48,7 @@ export const itemTypeRelation = relations(itemTypes, ({ many }) => ({
   items: many(items),
 }));
 
-export const itemSubTypes = sqliteTable("itemSubType", {
+export const itemSubTypes = sqliteTable("honkai_itemSubType", {
   name: text("name", {
     enum: [
       "Book",
@@ -75,7 +75,7 @@ export const itemSubTypeRelations = relations(itemSubTypes, ({ many }) => ({
   items: many(items),
 }));
 
-export const itemRarities = sqliteTable("itemRarity", {
+export const itemRarities = sqliteTable("honkai_itemRarity", {
   name: text("name", {
     enum: ["VeryRare", "SuperRare", "Rare", "NotNormal", "Normal"],
   }).primaryKey(),

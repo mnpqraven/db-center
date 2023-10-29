@@ -1,6 +1,6 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const properties = sqliteTable("property", {
+export const properties = sqliteTable("honkai_property", {
   type: text("type").primaryKey(),
   name: text("name").notNull(),
   skillTreeDesc: text("skill_tree_desc"),

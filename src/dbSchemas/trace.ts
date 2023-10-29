@@ -22,7 +22,7 @@ const ANCHORS = [
   "Point18",
 ] as const;
 
-export const traces = sqliteTable("trace", {
+export const traces = sqliteTable("honkai_trace", {
   id: int("id").primaryKey(),
   maxLevel: int("max_level"),
   pointType: int("point_type"),
@@ -34,10 +34,10 @@ export const traces = sqliteTable("trace", {
   paramList: text("param_list", { mode: "json" }).$type<{ list: string[][] }>(),
 });
 
-export const traceMaterials = sqliteTable("traceMaterial", {
+export const traceMaterials = sqliteTable("honkai_traceMaterial", {
   requestId: int("request_id").primaryKey({ autoIncrement: true }),
-  itemId: int("item_id").references(() => items.id),
-  pointId: int("point_id").references(() => traces.id),
+  itemId: int("item_id").references(() => items.id, { onDelete: "set null" }),
+  pointId: int("point_id").references(() => traces.id, { onDelete: "cascade" }),
   level: int("level"),
   num: int("item_num"),
 });

@@ -10,9 +10,7 @@ export const ELEMENTS = [
   "Imaginary",
 ] as const;
 
-export const elements = sqliteTable("element", {
-  name: text("name", {
-    enum: ELEMENTS,
-  }).primaryKey(),
+export const elements = sqliteTable("honkai_element", {
+  name: text("name", { enum: ELEMENTS }).primaryKey(),
   type: int("type").notNull(),
 });

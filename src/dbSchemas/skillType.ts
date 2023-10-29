@@ -9,7 +9,7 @@ export const SKILL_TYPES = [
   "Maze", // overworld Technique
 ] as const;
 
-export const skillTypes = sqliteTable("skillType", {
+export const skillTypes = sqliteTable("honkai_skillType", {
   name: text("name", { enum: SKILL_TYPES }).primaryKey(),
   type: int("type").notNull(),
 });

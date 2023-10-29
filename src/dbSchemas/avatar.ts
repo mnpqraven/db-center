@@ -3,17 +3,17 @@ import { InferSelectModel, relations } from "drizzle-orm";
 import { avatarToSkills } from "./avatarToSkill";
 import { elements, paths, traces } from ".";
 
-export const avatars = sqliteTable("avatar", {
+export const avatars = sqliteTable("honkai_avatar", {
   id: int("id").primaryKey(),
   name: text("name").notNull(),
   rarity: int("rarity").notNull(),
   votag: text("votag"),
-  damageType: text("damage_type")
-    .references(() => elements.name)
-    .notNull(),
-  path: text("path")
-    .references(() => paths.name)
-    .notNull(),
+  damageType: text("damage_type").references(() => elements.name, {
+    onDelete: "set null",
+  }),
+  path: text("path").references(() => paths.name, {
+    onDelete: "set null",
+  }),
   spneed: int("spneed"),
 });
 
@@ -24,14 +24,14 @@ export const avatarRelations = relations(avatars, ({ many }) => ({
 }));
 
 export const avatarTraces = sqliteTable(
-  "avatarTrace",
+  "honkai_avatarTrace",
   {
-    avatarId: int("avatar_id")
-      .references(() => avatars.id)
-      .notNull(),
-    pointId: int("point_id")
-      .references(() => traces.id)
-      .notNull(),
+    avatarId: int("avatar_id").references(() => avatars.id, {
+      onDelete: "cascade",
+    }),
+    pointId: int("point_id").references(() => traces.id, {
+      onDelete: "cascade",
+    }),
   },
   (t) => ({ pk: primaryKey(t.avatarId, t.pointId) })
 );
