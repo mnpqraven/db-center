@@ -10,6 +10,9 @@ import { ThemeProvider } from "next-themes";
 import { DevTools } from "jotai-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SessionProvider } from "next-auth/react";
+import { useState } from "react";
+import { trpc } from "@/app/_trpc/client";
+import { httpBatchLink } from "@trpc/client";
 
 const TANSTACK_CONFIG: QueryClientConfig = {
   defaultOptions: {
@@ -17,21 +20,28 @@ const TANSTACK_CONFIG: QueryClientConfig = {
   },
 };
 
-const queryClient = new QueryClient(TANSTACK_CONFIG);
-
 export function AppProvider({ children }: { children: React.ReactNode }) {
+  const [queryClient] = useState(() => new QueryClient(TANSTACK_CONFIG));
+  const [trpcClient] = useState(() =>
+    trpc.createClient({
+      links: [httpBatchLink({ url: "/api/trpc" })],
+    })
+  );
+
   return (
     <SessionProvider>
       <ThemeProvider attribute="class">
         <TooltipProvider delayDuration={300}>
-          <QueryClientProvider client={queryClient}>
-            <Provider>
-              {children}
+          <trpc.Provider client={trpcClient} queryClient={queryClient}>
+            <QueryClientProvider client={queryClient}>
+              <Provider>
+                {children}
 
-              <DevTools isInitialOpen={false} />
-              <ReactQueryDevtools initialIsOpen={false} />
-            </Provider>
-          </QueryClientProvider>
+                <DevTools isInitialOpen={false} />
+                <ReactQueryDevtools initialIsOpen={false} />
+              </Provider>
+            </QueryClientProvider>
+          </trpc.Provider>
         </TooltipProvider>
       </ThemeProvider>
     </SessionProvider>

@@ -1,6 +1,6 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const paths = sqliteTable("path", {
+export const paths = sqliteTable("honkai_path", {
   name: text("name", {
     enum: [
       "Destruction",
@@ -12,5 +12,5 @@ export const paths = sqliteTable("path", {
       "Abundance",
     ],
   }).primaryKey(),
-  type: integer("type").notNull(),
+  type: int("type").notNull(),
 });

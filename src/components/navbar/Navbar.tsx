@@ -18,21 +18,23 @@ export function Navbar() {
   return (
     <div className="sticky top-0 z-50 flex h-12 items-center justify-between border-b bg-background px-4">
       <div className="flex items-center gap-2">
-        {routes.map(({ icon, label, path }) => (
-          <Link href={path} key={path} className={pathnameClass(path)}>
-            {icon}
-            {label}
-          </Link>
-        ))}
+        {routes
+          .filter((_) => (isSamePath("/login") ? false : true))
+          .map(({ icon, label, path }) => (
+            <Link href={path} key={path} className={pathnameClass(path)}>
+              {icon}
+              {label}
+            </Link>
+          ))}
       </div>
 
-      <div className="flex gap-1">
+      <div className="flex items-center gap-1">
         <ThemeToggle />
         {status == "authenticated" && (
-          <button onClick={() => signOut()}>sign out</button>
+          <button onClick={() => signOut()}>Sign out</button>
         )}
         {status == "unauthenticated" && (
-          <button onClick={() => signIn("github")}>sign in</button>
+          <button onClick={() => signIn()}>Sign in</button>
         )}
       </div>
     </div>

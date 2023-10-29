@@ -1,16 +1,16 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const elements = sqliteTable("element", {
-  name: text("name", {
-    enum: [
-      "Fire",
-      "Ice",
-      "Physical",
-      "Wind",
-      "Lightning",
-      "Quantum",
-      "Imaginary",
-    ],
-  }).primaryKey(),
-  type: integer("type").notNull(),
+export const ELEMENTS = [
+  "Fire",
+  "Ice",
+  "Physical",
+  "Wind",
+  "Lightning",
+  "Quantum",
+  "Imaginary",
+] as const;
+
+export const elements = sqliteTable("honkai_element", {
+  name: text("name", { enum: ELEMENTS }).primaryKey(),
+  type: int("type").notNull(),
 });
