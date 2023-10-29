@@ -15,7 +15,7 @@ import { Loader2 } from "lucide-react";
 // INFO: https://fettblog.eu/typescript-react-generic-forward-refs/
 declare module "react" {
   function forwardRef<T, P = NonNullable<unknown>>(
-    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,
+    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null
   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
 }
 
@@ -35,14 +35,14 @@ function DataTableInner<TData>(
     className,
     ...props
   }: Props<TData>,
-  ref: ForwardedRef<HTMLDivElement>,
+  ref: ForwardedRef<HTMLDivElement>
 ) {
   return (
     <div ref={ref} className={className} {...props}>
       <Table className="border-separate border-spacing-0">
         <TableHeader
           className={cn(
-            stickyHeader ? "[&_th]:sticky [&_th]:top-0 [&_th]:bg-muted" : "",
+            stickyHeader ? "[&_th]:sticky [&_th]:top-0 [&_th]:bg-muted" : ""
           )}
         >
           {table.getHeaderGroups().map((headerGroup) => (
@@ -63,7 +63,7 @@ function DataTableInner<TData>(
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext(),
+                          header.getContext()
                         )}
                   </TableHead>
                 );
@@ -91,7 +91,7 @@ function DataTableInner<TData>(
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
