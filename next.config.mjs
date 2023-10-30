@@ -7,7 +7,6 @@ const nextConfig = {
       ["@swc-jotai/debug-label", {}],
       ["@swc-jotai/react-refresh", {}],
     ],
-    serverActions: true,
     serverComponentsExternalPackages: ["@libsql/client"],
   },
 };
